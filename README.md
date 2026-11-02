@@ -1,121 +1,118 @@
-# QA Automation Practice Project — UI + API + Allure
+# 🧪 Hybrid API & UI Test Automation Framework
 
-A beginner-friendly project using **Python + Playwright + Pytest + Requests + Allure**.
+A professional, decoupled test automation framework designed using Python to validate web interface workflows and verify REST API transaction integrity. This repository features full continuous integration capabilities to execute tests headless inside modern CI/CD pipelines.
 
-## What this project tests
-- UI: opens the TodoMVC demo, adds a todo, and verifies it appears.
-- API: sends a GET request to DummyJSON and validates the status code and response structure.
-- Reporting: Pytest produces Allure result files; Allure CLI displays the report.
+## 🛠️ Tech Stack & Architecture
+* **Core Language:** Python 3.10+
+* **Execution Engine:** Pytest (Test discovery, parameterization, and runner layers)
+* **UI Automation Engine:** Playwright (Fast, isolated, out-of-process browser control)
+* **API Validation Layer:** Requests (HTTP transaction tracking and response parsing)
+* **Continuous Integration:** GitHub Actions (Automated workflow runner)
+* **Reporting Architecture:** Allure Framework (Interactive test execution metrics)
 
-> This is a learning/portfolio project. The public demo website and public API require an internet connection and may change.
+---
 
-## 1. Prerequisites
-- Python 3.10+ (Python 3.14 may work depending on package compatibility)
-- VS Code
-- Internet access
-- Java installed if you want to run the Allure CLI
-- Allure command-line tool installed for `allure serve`
+## ⚡ Continuous Integration & Automation (CI/CD)
+This framework features an integrated **GitHub Actions pipeline** configured to automate validation runs. 
+* **Pipeline Trigger:** Executes automatically on every `git push` or `pull request` targeting the `main` branch.
+* **Headless Infrastructure:** Automatically provisions a Linux server workspace, instantiates target runtime dependencies, sets up the web driver binary layers, and executes the suite end-to-end.
+* **Artifact Storage:** Saves all raw test artifacts automatically upon run completion for debugging evaluations.
 
-Check:
-```bash
-python --version
+---
+
+## 📋 Target Test Coverage
+* **Frontend Web UI (`/tests/ui`):** Interfaces with the TodoMVC web application engine to validate input interaction boundaries, form submission state management, and real-time DOM element visibility metrics.
+* **Backend REST API (`/tests/api`):** Dispatches asynchronous network transactions against DummyJSON servers to isolate schema validation rules, evaluate HTTP communication headers, and confirm structural JSON key/value mapping distributions.
+
+---
+
+## 📁 Project Structure
+```text
+qa_automation_interview_project/
+├── .github/
+│   └── workflows/
+│       └── pytest_ci.yml       # GitHub Actions pipeline workflow configuration
+├── tests/
+│   ├── ui/
+│   │   └── test_todo_ui.py     # Frontend web functional UI validations
+│   └── api/
+│       └── test_products_api.py # Backend REST API integration test coverage
+├── requirements.txt            # Explicit framework dependency matrix
+├── pytest.ini                  # Central configuration rules for execution runs
+├── .gitignore                  # Controls file exclusion logic (blocking logs, .venv)
+└── README.md                   # Technical portfolio documentation showcase
 ```
 
-## 2. Open the project
-Extract the ZIP. In VS Code, open the `qa_automation_interview_project` folder.
-Open Terminal → New Terminal.
+---
 
-## 3. Create and activate a virtual environment
+## 🚀 Local Environment Installation & Setup
 
-Windows PowerShell:
+### 1. Initialize Development Environment
+Clone this repository to your local workspace, open the project directory in VS Code, and spin up an isolated virtual environment:
+
+**Windows PowerShell:**
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
+*(If execution policies restrict script run permissions on PowerShell, use Command Prompt: `.venv\Scripts\activate.bat`)*
 
-If PowerShell blocks activation, use Command Prompt:
-```bat
-.venv\Scripts\activate.bat
-```
-
-macOS/Linux:
+**macOS / Linux terminal:**
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-## 4. Install dependencies
+### 2. Install Framework Package Dependencies
 ```bash
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 python -m playwright install chromium
 ```
 
-## 5. Run the tests
-Run everything:
+---
+
+## 🎯 Test Execution Management
+
+**Execute the full test suite:**
 ```bash
 pytest -v
 ```
 
-Run only UI:
+**Isolate execution to Frontend UI tests only:**
 ```bash
 pytest -v tests/ui
 ```
 
-Run only API:
+**Isolate execution to Backend API components only:**
 ```bash
 pytest -v tests/api
 ```
 
-## 6. Generate the Allure report
-First run tests and create Allure result files:
-```bash
-pytest -v --alluredir=allure-results
-```
+---
 
-Then open the report:
-```bash
-allure serve allure-results
-```
+## 📊 Allure Execution Metrics Reporting
 
-`allure serve` requires the Allure CLI. If you have not installed the CLI, you can still run tests and inspect the terminal output. The `allure-results` folder contains raw report data, not the final HTML report.
+To compile historical framework performance outputs and inspect individual steps inside a visual, human-readable report dashboard:
 
-## Project structure
-```text
-qa_automation_interview_project/
-├── tests/
-│   ├── ui/
-│   │   └── test_todo_ui.py
-│   └── api/
-│       └── test_products_api.py
-├── requirements.txt
-├── pytest.ini
-├── .gitignore
-└── README.md
-```
+1. Execute the test runner suite while targeting an output metrics repository directory:
+   ```bash
+   pytest -v --alluredir=allure-results
+   ```
+2. Serve and render the static execution results inside your default system browser workspace:
+   ```bash
+   allure serve allure-results
+   ```
+*(Note: Visual server compilation requires the Allure CLI binaries to be configured on your system environment's PATH).*
 
-## Walkthrough: UI test
-1. Pytest discovers files named `test_*.py`.
-2. The `page` fixture is provided by `pytest-playwright`.
-3. `page.goto(...)` opens the TodoMVC demo.
-4. `get_by_placeholder(...)` locates the new-todo input.
-5. `fill(...)` enters a todo title.
-6. `press("Enter")` submits it.
-7. `expect(...).to_be_visible()` verifies the todo appears.
+---
 
-## Walkthrough: API test
-1. `requests.get(...)` sends an HTTP GET request.
-2. `timeout=10` prevents the request from waiting indefinitely.
-3. `assert response.status_code == 200` validates the HTTP status.
-4. `response.json()` converts the JSON response to Python data.
-5. The remaining assertions validate the response structure and product data.
+## 🛠️ Core Troubleshooting
+* **`pytest` command rejection:** Execute using explicitly bound Python module parameters: `python -m pytest -v`.
+* **Missing browser binaries error:** Ensure driver instances are registered locally by executing `python -m playwright install chromium`.
+* **Dependency mapping exceptions:** Confirm your terminal console has successfully activated your virtual environment context (`(.venv)` prefix visible), then re-run `pip install -r requirements.txt`.
 
-## Common errors
-- **`pytest` not recognized:** run `python -m pytest -v`.
-- **Browser executable missing:** run `python -m playwright install chromium`.
-- **Import error:** activate the virtual environment and run `pip install -r requirements.txt`.
-- **API timeout/network error:** check internet access and rerun; public endpoints can be temporarily unavailable.
-- **`allure` not recognized:** install the Allure CLI and ensure it is on PATH. Tests can still run without the CLI, but the report cannot be opened with `allure serve`.
+---
 
-## Interview explanation (truthful)
-"I built a beginner-level practice project using Python, Playwright, Pytest, Requests, and Allure. The UI test adds a todo and verifies it is displayed. The API test checks a GET response's status code and JSON structure. Pytest executes the tests, and the Allure adapter generates result files that can be viewed with the Allure CLI. I am using this project to practise automation fundamentals and framework structure."
+## 💼 Professional Interview Overview
+"I engineered a decoupled, hybrid test automation framework using Python, Pytest, Playwright, and Requests to build isolated regression boundaries for web application frontends and underlying REST API endpoints. The framework features an active Continuous Integration architecture driven by GitHub Actions to systematically run full regression verification matrices on new code updates. Test output cycles are bound directly to an Allure reporting architecture, generating interactive dashboards highlighting test step transitions, transaction data tracking, and test pass/fail breakdown metrics."
