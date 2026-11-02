@@ -1,0 +1,48 @@
+
+# Triggering first run
+name: Automation Regression Suite
+
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  regression-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Fetch code from the repository
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # 2. Construct the Python test runtime environment
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    # 3. Cache and install core testing dependencies
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 4. Initialize Playwright systemic browser infrastructure
+    - name: Install Playwright Browsers
+      run: python -m playwright install chromium
+
+    # 5. Execute API and UI verification pipelines
+    - name: Run Pytest Automation Suite
+      run: pytest -v --alluredir=allure-results
+
+    # 6. Preserved execution reporting output logs
+    - name: Upload Test Artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: automation-execution-results
+        path: allure-results/
+
